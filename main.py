@@ -1,12 +1,16 @@
 import requests
 
-def next_evolutions(lista,num):
-    print("Next Evolutions\n")
+def next_evolutions(lista,num=0,primeira_chamada=True):
+    if primeira_chamada:
+        print("Next Evolutions\n")
     for digi in lista:
         print(" "*num + digi["digimon"])
         novo_digimon = get_digimon(digi["digimon"])
+        level = novo_digimon["levels"][0]["level"]
+        if level == "Ultimate" or level == "Perfect":
+            continue
         nova_lista = novo_digimon["nextEvolutions"]
-        next_evolutions(nova_lista, num+1)
+        next_evolutions(nova_lista, num+1, primeira_chamada=False)
 
 def get_digimon(nome):
     url = f"https://digi-api.com/api/v1/digimon/{nome}"
@@ -33,4 +37,4 @@ while True:
 
 lista_next_evolutions = digimon_escolhido["nextEvolutions"]
 
-next_evolutions(lista_next_evolutions,0)
+next_evolutions(lista_next_evolutions)

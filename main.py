@@ -1,5 +1,13 @@
 import requests
 
+def next_evolutions(lista,num):
+    print("Next Evolutions\n")
+    for digi in lista:
+        print(" "*num + digi["digimon"])
+        novo_digimon = get_digimon(digi["digimon"])
+        nova_lista = novo_digimon["nextEvolutions"]
+        next_evolutions(nova_lista, num+1)
+
 def get_digimon(nome):
     url = f"https://digi-api.com/api/v1/digimon/{nome}"
     response = requests.get(url)
@@ -25,6 +33,4 @@ while True:
 
 lista_next_evolutions = digimon_escolhido["nextEvolutions"]
 
-print("Next Evolutions\n")
-for digi in lista_next_evolutions:
-    print(digi["digimon"])
+next_evolutions(lista_next_evolutions,0)

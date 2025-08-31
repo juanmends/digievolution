@@ -1,13 +1,30 @@
 import requests
 
+set_digimon = set()
+
+def level_check(levels):
+    if not levels:
+        return True
+    for level in levels:
+        # print(level)
+        if level["level"] == "Perfect" or level["level"] == "Ultimate":
+            return True
+    return False
+
 def next_evolutions(lista,num=0,primeira_chamada=True):
     if primeira_chamada:
-        print("Next Evolutions\n")
+        set_digimon.clear()
+        print("Next Evolutions:")
     for digi in lista:
         print(" "*num + digi["digimon"])
         novo_digimon = get_digimon(digi["digimon"])
-        level = novo_digimon["levels"][0]["level"]
-        if level == "Ultimate" or level == "Perfect":
+        digi_id = novo_digimon["id"]
+        if digi_id in set_digimon:
+            continue
+        else:
+            set_digimon.add(digi_id)
+        levels = novo_digimon["levels"]
+        if level_check(levels):
             continue
         nova_lista = novo_digimon["nextEvolutions"]
         next_evolutions(nova_lista, num+1, primeira_chamada=False)
